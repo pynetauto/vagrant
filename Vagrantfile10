@@ -1,0 +1,60 @@
+Vagrant.configure("2") do |config|
+
+  # Fedora VMs
+  config.vm.box = "pynetauto/fedora41"
+  config.vm.box_version = "1.0.0"
+
+  config.vm.define "f41a" do |f41a|
+    f41a.vm.hostname = "f41a.local"
+    f41a.vm.network "private_network", ip: "10.0.2.11"
+    f41a.vm.provision :shell, inline: <<-SHELL
+      echo "Setting up Fedora VM: f41a"
+      sudo dnf -y update
+    SHELL
+  end
+
+  config.vm.define "f41b" do |f41b|
+    f41b.vm.hostname = "f41b.local"
+    f41b.vm.network "private_network", ip: "10.0.2.22"
+    f41b.vm.provision :shell, inline: <<-SHELL
+      echo "Setting up Fedora VM: f41b"
+      sudo dnf -y update
+    SHELL
+  end
+
+  # Ubuntu VMs
+  config.vm.box = "pynetauto/ubuntu2404"
+  config.vm.box_version = "1.0.0"
+
+  config.vm.define "u24a" do |u24a|
+    u24a.vm.hostname = "u24a.local"
+    u24a.vm.network "private_network", ip: "10.0.2.33"
+    u24a.vm.provision :shell, inline: <<-SHELL
+      echo "Setting up Ubuntu VM: u24a"
+      sudo apt-get update -y
+    SHELL
+  end
+
+  config.vm.define "u24b" do |u24b|
+    u24b.vm.hostname = "u24b.local"
+    u24b.vm.network "private_network", ip: "10.0.2.44"
+    u24b.vm.provision :shell, inline: <<-SHELL
+      echo "Setting up Ubuntu VM: u24b"
+      sudo apt-get update -y
+    SHELL
+  end
+
+  # Windows Server 2022 VM
+  config.vm.define "win2022" do |win2022|
+    win2022.vm.box = "pynetauto/win2022"
+    #win2022.vm.box = "jborean93/WindowsServer2022"
+    win2022.vm.box_version = "1.0.0"
+    win2022.vm.hostname = "win2022.local"
+    win2022.vm.network "private_network", ip: "10.0.2.55"
+    win2022.vm.communicator = "winrm" # Set communicator to WinRM for Windows
+    win2022.vm.provision :shell, inline: <<-SHELL
+      echo "Windows Server 2022 is being set up."
+    SHELL
+  end
+
+end
